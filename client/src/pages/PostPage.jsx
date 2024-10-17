@@ -1,23 +1,29 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Header from "../components/Navbar";
 import Footer from "../components/footer";
 import { Col, Container, Row, Image } from "react-bootstrap";
+import { useLocation } from "react-router-dom";
+import axios from "axios";
 
 const PostPage = () => {
+  let location = useLocation();
+  console.log(location);
+
+  let queryParams = new URLSearchParams(location.search);
+  const postId = queryParams.get("id");
+
+  const [article, setArticle] = useState({});
   // Sample data for the article
-  const article = {
-    title: "Understanding React and Bootstrap",
-    content: `
-      React and Bootstrap can work seamlessly together to create beautiful 
-      and responsive web pages. In this post, we will explore how to create 
-      an article page using React components and Bootstrap for styling.
-      Let's dive into how to structure a page to display the article with an image, 
-      title, content, and author details.
-    `,
-    author: "John Doe",
-    date: "October 16, 2024",
-    imageUrl: "/blog1.jpg", // Placeholder image
-  };
+
+  useEffect(() => {
+    axios
+      .get("http://localhost:9000/api/v1/post/" + postId)
+      .then((response) => {
+        console.log(response.data.data);
+        let postData = response.data.data;
+        setArticle(postData);
+      });
+  }, []);
 
   return (
     <>
@@ -27,7 +33,7 @@ const PostPage = () => {
         <Row>
           <Col>
             <Image
-              src={article.imageUrl}
+              src={article.image}
               alt="Article"
               fluid
               className="mb-4 rounded"
@@ -44,7 +50,7 @@ const PostPage = () => {
             <p>{article.content}</p>
             <div className="author-info mt-4">
               <p>
-                <strong>Written by:</strong> {article.author}
+                <strong>Written by:</strong> {article?.author?.username}
               </p>
               <p>
                 <small>{article.date}</small>
