@@ -1,28 +1,35 @@
 import React, { useEffect, useState } from "react";
 import Header from "../components/Navbar";
-import Footer from "../components/footer";
+import Footer from "../components/Footer";
 import { Col, Container, Row, Image } from "react-bootstrap";
 import { useLocation } from "react-router-dom";
-import axios from "axios";
+import { fetchPost } from "../utils/axiosHelper";
 
 const PostPage = () => {
-  let location = useLocation();
-  console.log(location);
-
-  let queryParams = new URLSearchParams(location.search);
-  const postId = queryParams.get("id");
-
-  const [article, setArticle] = useState({});
   // Sample data for the article
+  const [post, setPost] = useState({
+    title: "",
+    content: ``,
+    author: "",
+    date: "",
+    image: "/blog1.jpg", // Placeholder image
+  });
+
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const pid = queryParams.get("id");
+
+  const getPost = async (postid) => {
+    const response = await fetchPost(postid);
+    if (response.status == "error") {
+      setPost({});
+    } else {
+      setPost(response.data);
+    }
+  };
 
   useEffect(() => {
-    axios
-      .get("http://localhost:9000/api/v1/post/" + postId)
-      .then((response) => {
-        console.log(response.data.data);
-        let postData = response.data.data;
-        setArticle(postData);
-      });
+    getPost(pid);
   }, []);
 
   return (
@@ -33,7 +40,7 @@ const PostPage = () => {
         <Row>
           <Col>
             <Image
-              src={article.image}
+              src={post.image}
               alt="Article"
               fluid
               className="mb-4 rounded"
@@ -45,15 +52,15 @@ const PostPage = () => {
         {/* Title, Content, and Author Section */}
         <Row>
           <Col md={{ span: 8, offset: 2 }}>
-            <h1 className="mb-3">{article.title}</h1>
+            <h1 className="mb-3">{post.title}</h1>
             <hr />
-            <p>{article.content}</p>
+            <p>{post.content}</p>
             <div className="author-info mt-4">
               <p>
-                <strong>Written by:</strong> {article?.author?.username}
+                <strong>Written by:</strong> {post.author?.username}
               </p>
               <p>
-                <small>{article.date}</small>
+                <small>{post.date}</small>
               </p>
             </div>
           </Col>

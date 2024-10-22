@@ -11,13 +11,13 @@ const PostCard = ({ post }) => {
         <Card.Img
           variant="top"
           src={post.image}
-          style={{ maxHeight: "300px", width: "100%", objectFit: "cover" }}
+          style={{ height: "200px", width: "100%", objectFit: "cover" }}
         />
         <Card.Body className="text-start">
           <Card.Title className="d-flex justify-content-between ">
             <Link
               to={"/article?id=" + post._id}
-              className="post"
+              className=""
               style={{ textDecoration: "none", color: "inherit" }}
             >
               {post.title}
@@ -36,22 +36,8 @@ const PostCard = ({ post }) => {
             )}
           </Card.Title>
           <hr />
-          <Card.Text>
-            {" "}
-            {post.content.slice(0, 100)}
-            {post.content.length > 100 && (
-              <>
-                <br />
-                <a
-                  href={`/article?id=${post._id}`}
-                  style={{ textDecoration: "none", color: "#007bff" }}
-                >
-                  Read more...
-                </a>
-              </>
-            )}
-          </Card.Text>
-          <strong className="author-info">- {post.author.username}</strong>
+          <Card.Text>{post.content.slice(0, 100)}...</Card.Text>
+          <strong className="author-info">- {post.author?.username}</strong>
         </Card.Body>
       </Card>
     </>

@@ -4,11 +4,12 @@ import { useAuth } from "../utils/AuthContext";
 
 const Header = () => {
   const { user, logout } = useAuth();
+
   return (
     <>
       <Navbar className="bg-body-tertiary">
         <Container>
-          <Navbar.Brand href="#home">
+          <Navbar.Brand href="/">
             <img
               alt=""
               src="/logo.png"
@@ -21,8 +22,16 @@ const Header = () => {
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="me-auto">
-              <Nav.Link href="/">Home</Nav.Link>
-              <Nav.Link href="/mypost">My Post</Nav.Link>
+              <Nav.Link as={Link} to="/">
+                Home
+              </Nav.Link>
+              {user ? (
+                <Nav.Link as={Link} to="/mypost">
+                  My Post
+                </Nav.Link>
+              ) : (
+                ""
+              )}
             </Nav>
           </Navbar.Collapse>
 
@@ -36,14 +45,13 @@ const Header = () => {
             <Button className="me-2" variant="outline-success">
               Search
             </Button>
-
             {user ? (
               <Button variant="warning" onClick={logout}>
                 Logout
               </Button>
             ) : (
               <Link to="/login">
-                <Button variant="primary">Login</Button>
+                <Button variant="success">Login</Button>
               </Link>
             )}
           </Form>

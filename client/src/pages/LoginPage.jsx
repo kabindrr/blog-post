@@ -4,24 +4,26 @@ import { Col, Container, Image, Row } from "react-bootstrap";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import { Link, useNavigate } from "react-router-dom";
+
 import { useAuth } from "../utils/AuthContext";
 
 const LoginPage = () => {
-  const [email, setEmail] = useState({});
-  const [password, setPassword] = useState({});
-  const navigate = useNavigate();
-
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const { login } = useAuth();
-  const hanndleOnSubmit = async (e) => {
+  const navigate = useNavigate(); // Initialize the useNavigate hook
+
+  const handleOnSubmit = async (e) => {
     e.preventDefault();
+
     await login({
       email,
       password,
     });
-    navigate("/");
 
-    console.log(email, password);
+    navigate("/");
   };
+
   return (
     <>
       <Container
@@ -33,7 +35,7 @@ const LoginPage = () => {
           <Col>
             <Form
               className="border p-4 rounded shadow"
-              onSubmit={hanndleOnSubmit}
+              onSubmit={handleOnSubmit}
             >
               <Form.Group className="mb-3 d-flex align-items-center justify-content-center">
                 <Link to="/">

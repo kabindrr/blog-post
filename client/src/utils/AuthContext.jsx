@@ -1,6 +1,6 @@
-import axios from "axios";
-import { children, createContext, useContext, useState } from "react";
-import { useNavigate } from "react-router-dom";
+// src/utils/AuthContext.js
+import React, { createContext, useContext, useState } from "react";
+import { userLogin } from "./axiosHelper";
 
 const AuthContext = createContext();
 
@@ -8,23 +8,25 @@ export const useAuth = () => useContext(AuthContext);
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
-  const navigate = useNavigate();
 
-  const login = async (LoginInfo) => {
+  const login = async (loginInfo) => {
     try {
-      const response = await axios.post(
-        "http://localhost:9000/api/v1/auth/login",
-        LoginInfo
-      );
-      setUser(response.data.data.username);
-      localStorage.setItem("userToken", response.data.data.token);
-      navigate("/");
+      const response = await userLogin(loginInfo);
+      const { token, username } = response.data;
+      localStorage.setItem("jwtToken", token);
+      setUser(username);
     } catch (error) {
-      console.log(error.message);
+      throw new Error("Login failed. Please check your credentials.");
     }
   };
+
+  const logout = () => {
+    localStorage.removeItem("jwtToken"); // Clear the token on logout
+    setUser(null);
+  };
+
   return (
-    <AuthContext.Provider value={{ user, login }}>
+    <AuthContext.Provider value={{ user, login, logout }}>
       {children}
     </AuthContext.Provider>
   );
