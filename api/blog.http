@@ -13,9 +13,9 @@ POST {{api_url}}/auth/signup
 Content-Type: application/json
 
 {
-  "username":"Kabi",
-  "email" : "a@email.com",
-  "password": "as"
+  "username":"user1",
+  "email" : "test@email.com",
+  "password": "password"
 }
 
 ###
@@ -25,8 +25,8 @@ POST {{api_url}}/auth/login
 Content-Type: application/json
 
 {
-  "email": "a@email.com",
-  "password" : "as"
+  "email": "test@email.com",
+  "password" : "password"
 }
 
 ###
@@ -43,9 +43,8 @@ Authorization: Bearer {{bearer_token}}
 Content-Type: application/json
 
 {
-  "title": "Online Gaming",
-  "content": "Online gaming refers to playing video games over the internet, either solo or with others. It enables players to connect with people worldwide, competing or collaborating in real-time, across various genres like action, strategy, role-playing, and sports. Popular games often feature vibrant virtual worlds, complex gameplay, and dynamic multiplayer modes. Online gaming has grown into a global community, fostering teamwork, strategic thinking, and communication skills. It is accessible across devices like PCs, consoles, and mobile phones. The industry has expanded to include eSports, where professional players compete in tournaments watched by millions, showcasing the competitive and social aspects of online gaming.",
-  "image":"https://images.unsplash.com/photo-1615680022647-99c397cbcaea?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8N3x8b25saW5lJTIwZ2FtaW5nfGVufDB8fDB8fHww"
+  "title": "Post 1",
+  "content": "Content of POST"
 }
 
 ###
@@ -59,5 +58,11 @@ GET {{api_url}}/post/{{id}}
 # @prompt bearer_token
 @post_id = 670e474d2121144d3b15ef17
 DELETE {{api_url}}/post/{{post_id}}
+Authorization: Bearer {{bearer_token}}
+
+
+###
+# @prompt bearer_token
+GET {{api_url}}/user/post
 Authorization: Bearer {{bearer_token}}
 
